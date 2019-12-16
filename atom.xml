@@ -1,0 +1,663 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>ieayoio&#39;s site</title>
+  
+  <subtitle>大道至简 衍化至繁 重剑无锋 大巧不工</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://www.ieayoio.com/"/>
+  <updated>2019-12-16T05:48:41.550Z</updated>
+  <id>http://www.ieayoio.com/</id>
+  
+  <author>
+    <name>ieayoio</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>centos多网络路由设置</title>
+    <link href="http://www.ieayoio.com/2019/12/16/centos%E5%A4%9A%E7%BD%91%E7%BB%9C%E8%B7%AF%E7%94%B1%E8%AE%BE%E7%BD%AE/"/>
+    <id>http://www.ieayoio.com/2019/12/16/centos多网络路由设置/</id>
+    <published>2019-12-16T05:48:29.000Z</published>
+    <updated>2019-12-16T05:48:41.550Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="centos多网络路由设置"><a href="#centos多网络路由设置" class="headerlink" title="centos多网络路由设置"></a>centos多网络路由设置</h2><p>只启用一个默认网络可以设置<code>/etc/sysconfig/network-scripts/ifcfg-XXX</code>中属性：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DEFROUTE=yes/no</span><br></pre></td></tr></table></figure><p>DEFROUTE表示是否是预设网络，改为no不会默认使用</p><p>路由配置可以修改<code>/etc/sysconfig/network-scripts/route-eth0</code>没有该文件可以手动创建：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ADDRESS0=10.10.0.0</span><br><span class="line">NETMASK0=255.255.0.0</span><br><span class="line">GATEWAY0=10.10.49.1</span><br></pre></td></tr></table></figure><p>重启服务生效<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart network</span><br></pre></td></tr></table></figure></p><p>其他：</p><p><code>route</code>命令只能临时生效</p><p><code>/etc/sysconfig/static-routes</code>文件已经失效</p><p>参考链接：</p><p><a href="https://www.cnblogs.com/yizhipanghu/p/10448457.html" target="_blank" rel="noopener">https://www.cnblogs.com/yizhipanghu/p/10448457.html</a></p><p><a href="https://jaminzhang.github.io/network/config-static-routes-in-CentOS-7/" target="_blank" rel="noopener">https://jaminzhang.github.io/network/config-static-routes-in-CentOS-7/</a></p><p><a href="https://www.cnblogs.com/peida/archive/2013/03/05/2943698.html" target="_blank" rel="noopener">https://www.cnblogs.com/peida/archive/2013/03/05/2943698.html</a></p><hr><p>该博文来自于ieayoio的博客：<a href="http://www.ieayoio.com/">ieayoio’s blog</a></p><p>本文链接：<a href="http://www.ieayoio.com/2019/12/16/centos多网络路由设置/">http://www.ieayoio.com/2019/12/16/centos多网络路由设置/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;centos多网络路由设置&quot;&gt;&lt;a href=&quot;#centos多网络路由设置&quot; class=&quot;headerlink&quot; title=&quot;centos多网络路由设置&quot;&gt;&lt;/a&gt;centos多网络路由设置&lt;/h2&gt;&lt;p&gt;只启用一个默认网络可以设置&lt;code&gt;/etc/sy
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Linux设置交换分区SWAP缓解内存压力</title>
+    <link href="http://www.ieayoio.com/2019/04/11/Linux%E8%AE%BE%E7%BD%AE%E4%BA%A4%E6%8D%A2%E5%88%86%E5%8C%BASWAP%E7%BC%93%E8%A7%A3%E5%86%85%E5%AD%98%E5%8E%8B%E5%8A%9B/"/>
+    <id>http://www.ieayoio.com/2019/04/11/Linux设置交换分区SWAP缓解内存压力/</id>
+    <published>2019-04-11T09:54:00.000Z</published>
+    <updated>2019-12-16T04:24:26.967Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="查看当前交换分区"><a href="#查看当前交换分区" class="headerlink" title="查看当前交换分区"></a>查看当前交换分区</h2><p>首先查看内存和交换分区大小<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@ieayoiohost ~]<span class="comment"># free -m</span></span><br><span class="line">              total        used        free      shared  buff/cache   available</span><br><span class="line">Mem:            229          73          38           4         116         133</span><br><span class="line">Swap:           255           0         255</span><br></pre></td></tr></table></figure></p><p>可以看到swap对应的total值就是就是目前交换分区的大小</p><h2 id="停用目前所有交换分区"><a href="#停用目前所有交换分区" class="headerlink" title="停用目前所有交换分区"></a>停用目前所有交换分区</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">swapoff -a</span><br></pre></td></tr></table></figure><h2 id="添加一个swap文件作为swap"><a href="#添加一个swap文件作为swap" class="headerlink" title="添加一个swap文件作为swap"></a>添加一个swap文件作为swap</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dd if=/dev/zero of=/root/swapfile bs=1M count=1024</span><br></pre></td></tr></table></figure><p><a href="https://zh.wikipedia.org/wiki//dev/zero" target="_blank" rel="noopener"><code>/dev/zero</code></a>会提供无限空字符去写入文件， <code>bs</code>为每块大小，<code>count</code>为数量，<code>bs*count</code>就是交换分区的总大小了。</p><h2 id="格式化交换分区文件"><a href="#格式化交换分区文件" class="headerlink" title="格式化交换分区文件"></a>格式化交换分区文件</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkswap /root/swapfile</span><br></pre></td></tr></table></figure><h2 id="启用swap分区文件"><a href="#启用swap分区文件" class="headerlink" title="启用swap分区文件"></a>启用swap分区文件</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">swapon /root/swapfile</span><br></pre></td></tr></table></figure><h2 id="添加开机启动"><a href="#添加开机启动" class="headerlink" title="添加开机启动"></a>添加开机启动</h2><p>修改文件<code>/etc/fstab</code>，修改或者添加设置交换分区</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/root/swapfile swap swap defaults 0 0</span><br></pre></td></tr></table></figure><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.bandwagonhost.net/1170.html" target="_blank" rel="noopener">https://www.bandwagonhost.net/1170.html</a></p><p><a href="https://blog.csdn.net/liumang_D/article/details/3899462" target="_blank" rel="noopener">https://blog.csdn.net/liumang_D/article/details/3899462</a></p><p><a href="https://zh.wikipedia.org/wiki//dev/zero" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki//dev/zero</a></p><hr><p>该博文来自于ieayoio的博客：<a href="http://www.ieayoio.com/">ieayoio’s blog</a></p><p>本文链接：<a href="http://www.ieayoio.com/2019/04/11/Linux设置交换分区SWAP缓解内存压力/">http://www.ieayoio.com/2019/04/11/Linux设置交换分区SWAP缓解内存压力/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;查看当前交换分区&quot;&gt;&lt;a href=&quot;#查看当前交换分区&quot; class=&quot;headerlink&quot; title=&quot;查看当前交换分区&quot;&gt;&lt;/a&gt;查看当前交换分区&lt;/h2&gt;&lt;p&gt;首先查看内存和交换分区大小&lt;br&gt;&lt;figure class=&quot;highlight sh&quot;&gt;
+      
+    
+    </summary>
+    
+      <category term="linux" scheme="http://www.ieayoio.com/categories/linux/"/>
+    
+    
+      <category term="linux" scheme="http://www.ieayoio.com/tags/linux/"/>
+    
+      <category term="swap" scheme="http://www.ieayoio.com/tags/swap/"/>
+    
+      <category term="vps" scheme="http://www.ieayoio.com/tags/vps/"/>
+    
+      <category term="交换分区" scheme="http://www.ieayoio.com/tags/%E4%BA%A4%E6%8D%A2%E5%88%86%E5%8C%BA/"/>
+    
+      <category term="内存" scheme="http://www.ieayoio.com/tags/%E5%86%85%E5%AD%98/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux访问Windows网络共享文件</title>
+    <link href="http://www.ieayoio.com/2018/10/17/Linux%E8%AE%BF%E9%97%AEWindows%E7%BD%91%E7%BB%9C%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6/"/>
+    <id>http://www.ieayoio.com/2018/10/17/Linux访问Windows网络共享文件/</id>
+    <published>2018-10-17T02:04:00.000Z</published>
+    <updated>2019-12-16T04:24:26.967Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Linux访问Windows网络共享文件"><a href="#Linux访问Windows网络共享文件" class="headerlink" title="Linux访问Windows网络共享文件"></a>Linux访问Windows网络共享文件</h1><p>这个问题是我半年前解决的，当时解决了还挺兴奋，再次遇到这个问题居然忘了怎么做，真是好记性不如烂笔头啊，何况，我记性又这么烂。。。</p><h2 id="问题产生"><a href="#问题产生" class="headerlink" title="问题产生"></a>问题产生</h2><p>公司部门经常在Windows网络上分享很多文件，他们经常告知：登录服务器:<code>\\xx.xx.xxx.xx\xxx部\全员共享</code>去下载某些文件，然而这些方法在Linux下完全不行</p><h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><p>解决办法其实很简单，将上面的的他提供的路径改为:<code>smb://xx.xx.xxx.xx/xxx部/全员共享</code>，加前缀smb，所有斜线反过来就行了，解决办法就是这么简单，记录一下</p><hr><p>该博文来自于ieayoio的博客：<a href="http://www.ieayoio.com/">ieayoio’s blog</a></p><p>本文链接：<a href="http://www.ieayoio.com/2018/10/17/Linux访问Windows网络共享文件/">http://www.ieayoio.com/2018/10/17/Linux访问Windows网络共享文件/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;Linux访问Windows网络共享文件&quot;&gt;&lt;a href=&quot;#Linux访问Windows网络共享文件&quot; class=&quot;headerlink&quot; title=&quot;Linux访问Windows网络共享文件&quot;&gt;&lt;/a&gt;Linux访问Windows网络共享文件&lt;/h1&gt;&lt;
+      
+    
+    </summary>
+    
+      <category term="linux" scheme="http://www.ieayoio.com/categories/linux/"/>
+    
+    
+      <category term="linux" scheme="http://www.ieayoio.com/tags/linux/"/>
+    
+      <category term="网络" scheme="http://www.ieayoio.com/tags/%E7%BD%91%E7%BB%9C/"/>
+    
+      <category term="Windows" scheme="http://www.ieayoio.com/tags/Windows/"/>
+    
+      <category term="共享文件" scheme="http://www.ieayoio.com/tags/%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux搭建ftp服务器入门</title>
+    <link href="http://www.ieayoio.com/2018/03/14/Linux%E6%90%AD%E5%BB%BAftp%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%85%A5%E9%97%A8/"/>
+    <id>http://www.ieayoio.com/2018/03/14/Linux搭建ftp服务器入门/</id>
+    <published>2018-03-14T08:32:00.000Z</published>
+    <updated>2019-12-16T04:24:26.967Z</updated>
+    
+    <content type="html"><![CDATA[<p>首先讲解Ubuntu下搭建的方式，末尾讲centos的区别</p><h4 id="一、清除vsftpd"><a href="#一、清除vsftpd" class="headerlink" title="一、清除vsftpd"></a>一、清除vsftpd</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get purge vsftpd</span><br></pre></td></tr></table></figure><h4 id="二、安装vsftpd"><a href="#二、安装vsftpd" class="headerlink" title="二、安装vsftpd"></a>二、安装vsftpd</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install vsftpd</span><br></pre></td></tr></table></figure><h4 id="三、创建ftp用户"><a href="#三、创建ftp用户" class="headerlink" title="三、创建ftp用户"></a>三、创建ftp用户</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建用户</span></span><br><span class="line">sudo useradd ftpuser</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置用户密码</span></span><br><span class="line">sudo passwd ftpuser</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改用户的家目录位/home/ieayoio/ftpdir</span></span><br><span class="line">sudo usermod -d /home/ieayoio/ftpdir ftpuser</span><br><span class="line"></span><br><span class="line"><span class="comment"># 改变ftp文件夹权限</span></span><br><span class="line">chmod 777 /home/ieayoio/ftpdir</span><br></pre></td></tr></table></figure><p>如下设置ftpuser不能登录也会导致无法使用ftp<br><del>sudo usermod -s /sbin/nologin ftpuser</del></p><h4 id="四、配置vsftpd-conf"><a href="#四、配置vsftpd-conf" class="headerlink" title="四、配置vsftpd.conf"></a>四、配置vsftpd.conf</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit /etc/vsftpd.conf</span><br></pre></td></tr></table></figure><p>编辑vsftpd.conf文件</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">userlist_deny=NO</span><br><span class="line">userlist_enable=YES</span><br><span class="line">#允许登录的用户</span><br><span class="line">userlist_file=/etc/allowed_users</span><br><span class="line">seccomp_sandbox=NO</span><br><span class="line">#默认ftp下载目录（可不设置）</span><br><span class="line"># local_root=/home/ieayoio/ftpdir</span><br></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">local_enable=YES</span><br><span class="line">#设置文件上传</span><br><span class="line">write_enable=YES</span><br><span class="line">#使用utf8（centos默认没有这个设置也不需要添加）</span><br><span class="line">utf8_filesystem=YES</span><br></pre></td></tr></table></figure><h4 id="五、设置允许登录ftp账户"><a href="#五、设置允许登录ftp账户" class="headerlink" title="五、设置允许登录ftp账户"></a>五、设置允许登录ftp账户</h4><p>创建并且编写<code>/etc/allowed_users</code>，规则：一行一个用户，表示允许使用的用户</p><h4 id="六、启动停止重启服务"><a href="#六、启动停止重启服务" class="headerlink" title="六、启动停止重启服务"></a>六、启动停止重启服务</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service vsftpd start</span><br></pre></td></tr></table></figure><p>或者<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo /etc/init.d/vsftpd start</span><br><span class="line">sudo /etc/init.d/vsftpd stop</span><br><span class="line">sudo /etc/init.d/vsftpd restart</span><br></pre></td></tr></table></figure></p><h4 id="七、访问ftp服务"><a href="#七、访问ftp服务" class="headerlink" title="七、访问ftp服务"></a>七、访问ftp服务</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo ftp 127.0.0.1</span><br><span class="line">浏览器访问 </span><br><span class="line">ftp://127.0.0.1 </span><br><span class="line">或者 </span><br><span class="line">ftp://localhost</span><br><span class="line"></span><br><span class="line">远程访问时使用实际ip ftp://your_ip</span><br></pre></td></tr></table></figure><h4 id="八、与centos的区别"><a href="#八、与centos的区别" class="headerlink" title="八、与centos的区别"></a>八、与centos的区别</h4><p>测试centos版本：docker centos 5.7</p><ul><li>centos没有utf8_filesystem，也不要添加这个属性</li><li>centos下vsftpd.conf目录位置在<code>/etc/vsftpd/vsftpd.conf</code></li><li>ftp用户目录设置<code>/root/ftpdir</code>报错<code>500 OOPS: cannot change...</code>，设置<code>/home/ftpuser/ftpdir</code>正常</li></ul><h4 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h4><ul><li><a href="http://blog.csdn.net/yancey_blog/article/details/52790451" target="_blank" rel="noopener">http://blog.csdn.net/yancey_blog/article/details/52790451</a></li><li><a href="http://www.cnblogs.com/chenmh/p/5365274.html" target="_blank" rel="noopener">http://www.cnblogs.com/chenmh/p/5365274.html</a></li><li><a href="http://blog.csdn.net/yehuohan/article/details/51864863" target="_blank" rel="noopener">http://blog.csdn.net/yehuohan/article/details/51864863</a></li><li><a href="http://blog.csdn.net/YHYR_YCY/article/details/77758302" target="_blank" rel="noopener">http://blog.csdn.net/YHYR_YCY/article/details/77758302</a></li></ul><hr><p>该博文来自于ieayoio的博客：<a href="http://www.ieayoio.com/">ieayoio’s blog</a></p><p>本文链接：<a href="http://www.ieayoio.com/2018/03/14/Linux搭建ftp服务器入门/">http://www.ieayoio.com/2018/03/14/Linux搭建ftp服务器入门/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;首先讲解Ubuntu下搭建的方式，末尾讲centos的区别&lt;/p&gt;
+&lt;h4 id=&quot;一、清除vsftpd&quot;&gt;&lt;a href=&quot;#一、清除vsftpd&quot; class=&quot;headerlink&quot; title=&quot;一、清除vsftpd&quot;&gt;&lt;/a&gt;一、清除vsftpd&lt;/h4&gt;&lt;fig
+      
+    
+    </summary>
+    
+      <category term="linux" scheme="http://www.ieayoio.com/categories/linux/"/>
+    
+    
+      <category term="linux" scheme="http://www.ieayoio.com/tags/linux/"/>
+    
+      <category term="ftp" scheme="http://www.ieayoio.com/tags/ftp/"/>
+    
+      <category term="ftp服务器" scheme="http://www.ieayoio.com/tags/ftp%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+    
+      <category term="搭建" scheme="http://www.ieayoio.com/tags/%E6%90%AD%E5%BB%BA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>mysql5.7+ 关闭ONLY_FULL_GROUP_BY</title>
+    <link href="http://www.ieayoio.com/2018/03/13/mysql5-7-%E5%85%B3%E9%97%ADONLY-FULL-GROUP-BY/"/>
+    <id>http://www.ieayoio.com/2018/03/13/mysql5-7-关闭ONLY-FULL-GROUP-BY/</id>
+    <published>2018-03-13T09:24:00.000Z</published>
+    <updated>2019-12-16T04:24:26.967Z</updated>
+    
+    <content type="html"><![CDATA[<p>mysql5.7以上版本在常会报关于<code>only_full_group_by</code>的错误，可以在sql_mode中关闭他，网上查找的解决办法通过实践后发现有些不详细，关键地方说的不清楚，有的有些错误，自己解决之后在这里总结一下。</p><ul><li>操作系统：Linux</li><li>mysql版本：5.7.18-1</li></ul><h4 id="查看"><a href="#查看" class="headerlink" title="查看"></a>查看</h4><p>进入mysql 查看mysql版本：<code>select version();</code></p><p>运行<code>SELECT @@GLOBAL.sql_mode;</code>和<code>SELECT @@SESSION.sql_mode;</code>查看sql_model参数，可以看到参数中有<code>ONLY_FULL_GROUP_BY</code>，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION</span><br></pre></td></tr></table></figure></p><h4 id="临时去除ONLY-FULL-GROUP-BY"><a href="#临时去除ONLY-FULL-GROUP-BY" class="headerlink" title="临时去除ONLY_FULL_GROUP_BY"></a>临时去除ONLY_FULL_GROUP_BY</h4><p>因为这种方式从参考资料上来看只是临时去除，所以，我并没有尝试，这里列出解决办法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set @@GLOBAL.sql_mode=&apos;&apos;;</span><br><span class="line">set sql_mode =&apos;STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION&apos;;</span><br></pre></td></tr></table></figure></p><h4 id="修改配置文件去除ONLY-FULL-GROUP-BY"><a href="#修改配置文件去除ONLY-FULL-GROUP-BY" class="headerlink" title="修改配置文件去除ONLY_FULL_GROUP_BY"></a>修改配置文件去除ONLY_FULL_GROUP_BY</h4><p>这种方式是我实践的方式，我详细说一下：</p><ul><li>打开配置文件mysql.cnf</li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit /etc/mysql/mysql.cnf</span><br></pre></td></tr></table></figure><ul><li>在[mysqld]中添加代码</li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sql_mode =&apos;STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION&apos;</span><br></pre></td></tr></table></figure><p>网上有很多资料写到这段代码在[mysql]中也同时添加，另外有些写着添加内容为 “set sql_mode XXXX”经过我在自己机器上验证，发现都是不行的，只能在[mysqld]添加，否则会造成mysql无法连接</p><h4 id="验证是否生效"><a href="#验证是否生效" class="headerlink" title="验证是否生效"></a>验证是否生效</h4><p>重启mysql</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service mysql restart</span><br></pre></td></tr></table></figure><p>查看参数是否存在</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SELECT @@sql_mode;</span><br><span class="line">+------------------------------------------------------------------------------------------------------------------------+</span><br><span class="line">| @@sql_mode                                                                                                             |</span><br><span class="line">+------------------------------------------------------------------------------------------------------------------------+</span><br><span class="line">| STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION |</span><br><span class="line">+------------------------------------------------------------------------------------------------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; SELECT @@GLOBAL.sql_mode;</span><br><span class="line">+------------------------------------------------------------------------------------------------------------------------+</span><br><span class="line">| @@GLOBAL.sql_mode                                                                                                      |</span><br><span class="line">+------------------------------------------------------------------------------------------------------------------------+</span><br><span class="line">| STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION |</span><br><span class="line">+------------------------------------------------------------------------------------------------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure><h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4><ul><li><a href="http://www.cnblogs.com/jim2016/p/6322703.html" target="_blank" rel="noopener">http://www.cnblogs.com/jim2016/p/6322703.html</a></li><li><a href="http://xstarcd.github.io/wiki/MySQL/MySQL-sql-mode.html" target="_blank" rel="noopener">http://xstarcd.github.io/wiki/MySQL/MySQL-sql-mode.html</a></li></ul><hr><p>该博文来自于ieayoio的博客：<a href="http://www.ieayoio.com/">ieayoio’s blog</a></p><p>本文链接：<a href="http://www.ieayoio.com/2018/03/13/mysql5-7-关闭ONLY-FULL-GROUP-BY/">http://www.ieayoio.com/2018/03/13/mysql5-7-关闭ONLY-FULL-GROUP-BY/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;mysql5.7以上版本在常会报关于&lt;code&gt;only_full_group_by&lt;/code&gt;的错误，可以在sql_mode中关闭他，网上查找的解决办法通过实践后发现有些不详细，关键地方说的不清楚，有的有些错误，自己解决之后在这里总结一下。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;操
+      
+    
+    </summary>
+    
+      <category term="数据库" scheme="http://www.ieayoio.com/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+    
+      <category term="mysql" scheme="http://www.ieayoio.com/tags/mysql/"/>
+    
+      <category term="数据库" scheme="http://www.ieayoio.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+      <category term="ONLY_FULL_GROUP_BY" scheme="http://www.ieayoio.com/tags/ONLY-FULL-GROUP-BY/"/>
+    
+      <category term="mysql5.7" scheme="http://www.ieayoio.com/tags/mysql5-7/"/>
+    
+      <category term="GROUP BY" scheme="http://www.ieayoio.com/tags/GROUP-BY/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>抠脚老汉卖萌失败--关于markdown正确的注释方式</title>
+    <link href="http://www.ieayoio.com/2018/01/23/%E5%85%B3%E4%BA%8Emarkdown%E6%AD%A3%E7%A1%AE%E7%9A%84%E6%B3%A8%E9%87%8A%E6%96%B9%E5%BC%8F/"/>
+    <id>http://www.ieayoio.com/2018/01/23/关于markdown正确的注释方式/</id>
+    <published>2018-01-23T09:24:00.000Z</published>
+    <updated>2019-12-16T04:24:26.967Z</updated>
+    
+    <content type="html"><![CDATA[<p>Markdown怎么使用注释呢，写在markdown的内容并不想展示出来，怎么做呢？这里：<a href="https://www.v2ex.com/t/329205" target="_blank" rel="noopener">https://www.v2ex.com/t/329205</a> 给了我们一些讨论:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[comment]: &lt;&gt; (This is a comment, it will not be included)</span><br><span class="line">[comment]: &lt;&gt; (in  the output file unless you use it in)</span><br><span class="line">[comment]: &lt;&gt; (a reference style link.)</span><br><span class="line">[//]: &lt;&gt; (This is also a comment.)</span><br><span class="line">[//]: # (This may be the most platform independent comment)</span><br></pre></td></tr></table></figure><p>然而这样也能注释：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[^_^]:</span><br><span class="line">    commentted-out contents</span><br><span class="line">    should be shift to right by four spaces (vim ：`&gt;&gt;`).</span><br></pre></td></tr></table></figure></p><p>这已经让我十分震惊了，markdown的注释方式怎么这么萌？！</p><p>然而更让我震惊的是@delogn的评论：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[^_^]: </span><br><span class="line">1 </span><br><span class="line"></span><br><span class="line">[&gt;_&lt;]: </span><br><span class="line">2 </span><br><span class="line"></span><br><span class="line">[&gt;_&gt;]: </span><br><span class="line">3 </span><br><span class="line"></span><br><span class="line">都可以用啊，不错不错！以后吐槽和心情都可以写在注释里了！</span><br></pre></td></tr></table></figure></p><p>我试了一下居然真的是！太让人震惊了！！难道这是Markdown的作者在卖萌？！我有点不敢相信Markdown居然会有这样的“语法”,经过我的测试我发现很多颜文字都有注释的作用！我不禁疑惑，为什么？？差点以为“语法”就是那么萌，然而，我发现其实中括号中可以添加很多字符都有<strong>一些</strong>注释的作用，发现类似<code>[xxx]:</code>这样的语法十分类似与<a href="http://www.ieayoio.tk/2018/01/23/%E4%B8%80%E4%B8%AAMarkdown%E9%93%BE%E6%8E%A5%E4%B8%8E%E5%9B%BE%E7%89%87%E6%8A%80%E5%B7%A7/" target="_blank" rel="noopener">上一篇博客中</a>文章末尾指定图片的base64编码的那里很像，这就可以解释为什么颜文字会有注释的作用了，但是使用这种“卖萌注释”真的可行吗？我对他们进行了一些测试内容如下：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">1.</span><br><span class="line"></span><br><span class="line">[^_^]:</span><br><span class="line">abc de</span><br><span class="line">f</span><br><span class="line"></span><br><span class="line">g</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">    </span><br><span class="line">2.</span><br><span class="line"></span><br><span class="line">[&gt;_&lt;]:</span><br><span class="line">abcd</span><br><span class="line">defg</span><br><span class="line">    </span><br><span class="line">---</span><br><span class="line">    </span><br><span class="line">3.</span><br><span class="line"></span><br><span class="line">[&gt;_&lt;]:</span><br><span class="line">abc de</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line"></span><br><span class="line">4.</span><br><span class="line"></span><br><span class="line">[^^]:</span><br><span class="line">abc de</span><br><span class="line">f</span><br><span class="line"></span><br><span class="line">g</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line"></span><br><span class="line">5.</span><br><span class="line"></span><br><span class="line">&lt;!--</span><br><span class="line">abc de</span><br><span class="line">f</span><br><span class="line"></span><br><span class="line">g</span><br><span class="line">--&gt;</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line"></span><br><span class="line">6.</span><br><span class="line"></span><br><span class="line">&lt;!--</span><br><span class="line">abc de</span><br><span class="line">f</span><br><span class="line"></span><br><span class="line">g</span><br><span class="line">--&gt;</span><br><span class="line">hijk</span><br><span class="line"></span><br><span class="line">---</span><br></pre></td></tr></table></figure><p>在Cmd Markdown中大致显示如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">1.</span><br><span class="line"></span><br><span class="line">g</span><br><span class="line"></span><br><span class="line">------------------------------------------</span><br><span class="line"></span><br><span class="line">2.</span><br><span class="line"></span><br><span class="line">defg</span><br><span class="line"></span><br><span class="line">------------------------------------------</span><br><span class="line"></span><br><span class="line">3.</span><br><span class="line"></span><br><span class="line">&gt;_&lt;: </span><br><span class="line">abc de</span><br><span class="line"></span><br><span class="line">------------------------------------------</span><br><span class="line"></span><br><span class="line">4.</span><br><span class="line"></span><br><span class="line">g</span><br><span class="line"></span><br><span class="line">------------------------------------------</span><br><span class="line"></span><br><span class="line">5.</span><br><span class="line"></span><br><span class="line">------------------------------------------</span><br><span class="line"></span><br><span class="line">6.</span><br><span class="line"></span><br><span class="line">abc de </span><br><span class="line">f</span><br><span class="line"></span><br><span class="line">g </span><br><span class="line">--&gt; </span><br><span class="line">hijk</span><br><span class="line"></span><br><span class="line">------------------------------------------</span><br></pre></td></tr></table></figure></p><p>有道云笔记大致显示效果如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">1.</span><br><span class="line"></span><br><span class="line">abc de f</span><br><span class="line"></span><br><span class="line">g</span><br><span class="line"></span><br><span class="line">------------------------------------------</span><br><span class="line"></span><br><span class="line">2.</span><br><span class="line"></span><br><span class="line">defg</span><br><span class="line"></span><br><span class="line">------------------------------------------</span><br><span class="line"></span><br><span class="line">3.</span><br><span class="line"></span><br><span class="line">&gt;_&lt;: abc de</span><br><span class="line"></span><br><span class="line">------------------------------------------</span><br><span class="line"></span><br><span class="line">4.</span><br><span class="line"></span><br><span class="line">abc de f</span><br><span class="line"></span><br><span class="line">g</span><br><span class="line"></span><br><span class="line">------------------------------------------</span><br><span class="line"></span><br><span class="line">5.</span><br><span class="line"></span><br><span class="line">------------------------------------------</span><br><span class="line"></span><br><span class="line">6.</span><br><span class="line">hijk</span><br><span class="line"></span><br><span class="line">------------------------------------------</span><br></pre></td></tr></table></figure></p><p>由cmd Markdown的测试结果可以看到，<code>[^_^]:</code>可以简化为<code>[^^]:</code>具有相同的效果，支持多行注释，但是不能有空行，普通的“颜文字注释”方式不能多行注释，甚至单行都不能有空格，这些“颜文字注释”在有道云笔记下更是面目全非，可以说是非常鸡肋了，这也是之前我为什么说只有“一些”注释的作用了，相比之下，采用html的注释方式<code>&lt;!-- --&gt;</code>更可靠，但是在cmd Markdown下紧临一行如果不是空行，就会造成这种注释方式的失效。</p><p>所以，更靠谱的注释方式还是采用<code>&lt;!-- --&gt;</code>比较好，这也是众老汉们卖萌失败（真是可惜）,但是最好注释结束空一行比较好。</p><hr><p>该博文来自于ieayoio的博客：<a href="http://www.ieayoio.com/">ieayoio’s blog</a></p><p>本文链接：<a href="http://www.ieayoio.com/2018/01/23/关于markdown正确的注释方式/">http://www.ieayoio.com/2018/01/23/关于markdown正确的注释方式/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;Markdown怎么使用注释呢，写在markdown的内容并不想展示出来，怎么做呢？这里：&lt;a href=&quot;https://www.v2ex.com/t/329205&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://www.v2ex.com/
+      
+    
+    </summary>
+    
+      <category term="markdown" scheme="http://www.ieayoio.com/categories/markdown/"/>
+    
+    
+      <category term="html" scheme="http://www.ieayoio.com/tags/html/"/>
+    
+      <category term="markdown" scheme="http://www.ieayoio.com/tags/markdown/"/>
+    
+      <category term="注释" scheme="http://www.ieayoio.com/tags/%E6%B3%A8%E9%87%8A/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>一个Markdown链接与图片技巧</title>
+    <link href="http://www.ieayoio.com/2018/01/23/%E4%B8%80%E4%B8%AAMarkdown%E9%93%BE%E6%8E%A5%E4%B8%8E%E5%9B%BE%E7%89%87%E6%8A%80%E5%B7%A7/"/>
+    <id>http://www.ieayoio.com/2018/01/23/一个Markdown链接与图片技巧/</id>
+    <published>2018-01-23T05:32:00.000Z</published>
+    <updated>2019-12-16T04:24:26.967Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h4><p>先来看一下超链接和图片的语法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[ieayoio&apos;s site](http://www.ieayoio.tk/)</span><br><span class="line">![ieayoio&apos;s favicon](http://www.ieayoio.tk/favicon.ico)</span><br></pre></td></tr></table></figure></p><p>显示效果如下：</p><p><a href="http://www.ieayoio.tk/" target="_blank" rel="noopener">ieayoio’s site</a></p><p><img src="http://www.ieayoio.tk/favicon.ico" alt="ieayoio&#39;s favicon"></p><h4 id="图片的base64编码"><a href="#图片的base64编码" class="headerlink" title="图片的base64编码"></a>图片的base64编码</h4><p>可以百度搜索<code>图片转码base64</code>有很多在线工具，比如：<a href="http://tool.chinaz.com/tools/imgtobase" target="_blank" rel="noopener">http://tool.chinaz.com/tools/imgtobase</a></p><p>转化出的以<code>data:image</code>开头的一长串代码可以替代图片的链接，这样并不需要单独的图片服务器，可以将图片与mark文本融为一体</p><h4 id="高级的语法技巧"><a href="#高级的语法技巧" class="headerlink" title="高级的语法技巧"></a>高级的语法技巧</h4><p>上面的做法有个弊端，图片的base64编码通常十分冗长，这样做对markdown代码的可读性破坏非常严重，所以能不能将base64编码定义一个“变量”放在文章末端，然后使用这个“变量”替代冗长的编码？答案是可以的,代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">![chrome][chr]</span><br><span class="line"></span><br><span class="line">[chr]: data:image/jpg;base64,/.....==</span><br></pre></td></tr></table></figure></p><p>效果如下</p><p><img src="data:image/jpg;base64,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" alt="chrome"></p><p>以上方法同样适用于超链接，这样对代码的影响较小，图片与文档融为一体，图片不会因为第三方服务停止的消失而失效，但是冗长的base64编码放在末端依然使markdown的文档一下子增加了无数倍的文件大小</p><hr><p>该博文来自于ieayoio的博客：<a href="http://www.ieayoio.com/">ieayoio’s blog</a></p><p>本文链接：<a href="http://www.ieayoio.com/2018/01/23/一个Markdown链接与图片技巧/">http://www.ieayoio.com/2018/01/23/一个Markdown链接与图片技巧/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;基本语法&quot;&gt;&lt;a href=&quot;#基本语法&quot; class=&quot;headerlink&quot; title=&quot;基本语法&quot;&gt;&lt;/a&gt;基本语法&lt;/h4&gt;&lt;p&gt;先来看一下超链接和图片的语法：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;
+      
+    
+    </summary>
+    
+      <category term="markdown" scheme="http://www.ieayoio.com/categories/markdown/"/>
+    
+    
+      <category term="markdown" scheme="http://www.ieayoio.com/tags/markdown/"/>
+    
+      <category term="图片" scheme="http://www.ieayoio.com/tags/%E5%9B%BE%E7%89%87/"/>
+    
+      <category term="base64" scheme="http://www.ieayoio.com/tags/base64/"/>
+    
+      <category term="编码" scheme="http://www.ieayoio.com/tags/%E7%BC%96%E7%A0%81/"/>
+    
+      <category term="超链接" scheme="http://www.ieayoio.com/tags/%E8%B6%85%E9%93%BE%E6%8E%A5/"/>
+    
+      <category term="hexo" scheme="http://www.ieayoio.com/tags/hexo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>有线与无线网络叠加提升网速</title>
+    <link href="http://www.ieayoio.com/2018/01/17/%E6%9C%89%E7%BA%BF%E4%B8%8E%E6%97%A0%E7%BA%BF%E7%BD%91%E7%BB%9C%E5%8F%A0%E5%8A%A0%E6%8F%90%E5%8D%87%E7%BD%91%E9%80%9F/"/>
+    <id>http://www.ieayoio.com/2018/01/17/有线与无线网络叠加提升网速/</id>
+    <published>2018-01-17T09:27:00.000Z</published>
+    <updated>2019-12-16T04:24:26.971Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="概念解释"><a href="#概念解释" class="headerlink" title="概念解释"></a>概念解释</h3><p>同时连接有线与无线网络时，电脑会使用有线网络还是无线网络呢？带着这个疑问，经过一番查找，发现原来时可以同时使用的，而且可以提升网速！首先有一个跃点数的概念，先看一下百度百科的解释：</p><blockquote><p>跃点：即路由。一个路由为一个跃点。传输过程中需要经过多个网络，每个被经过的网络设备点（有能力路由的）叫做一个跃点，地址就是它的ip。跃点数是经过了多少个跃点的累加器，为了防止无用的数据包在网上流散。 为路由指定所需跃点数的整数值（范围是 1 ~ 9999），它用来在路由表里的多个路由中选择与转发包中的目标地址最为匹配的路由。所选的路由具有最少的跃点数。跃点数能够反映跃点的数量、路径的速度、路径可靠性、路径吞吐量以及管理属性。</p></blockquote><h3 id="查看跃点数"><a href="#查看跃点数" class="headerlink" title="查看跃点数"></a>查看跃点数</h3><p>也就是说到底选择无线还是有线会受到跃点数的影响，跃点数少的会被优先选择，打开cmd运行如下命令查看：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">route print</span><br></pre></td></tr></table></figure></p><p>输出结果部分如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">IPv4 路由表</span><br><span class="line">===========================================================================</span><br><span class="line">活动路由:</span><br><span class="line">网络目标        网络掩码          网关       接口   跃点数</span><br><span class="line">          0.0.0.0          0.0.0.0       10.10.49.1      10.10.49.69     20</span><br><span class="line">          0.0.0.0          0.0.0.0         10.0.0.1        10.0.0.38     10</span><br></pre></td></tr></table></figure></p><p>第一个为我的有线网络，第二个为我的无线网络，可以看到，我的有线网络跃点数为20，无线网络跃点数为10。</p><h3 id="设置跃点数"><a href="#设置跃点数" class="headerlink" title="设置跃点数"></a>设置跃点数</h3><p>经过我的查找资料，如果设置相同的跃点数，就能使用叠加网络，<br>设置位置为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">更改适配器设置--&gt;右键一个适配器属性--&gt;双击Internet协议版本4(TCP/IPv4)</span><br><span class="line">--&gt;右下方高级--&gt;把“自动跃点”取消--&gt;在“接口跃点数”填写自定义的数目</span><br></pre></td></tr></table></figure></p><p>可以设置10与20之间的中值15即可。</p><h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>我的有线网络很慢，无线网络稍快，通过测试，将无线网络的跃点数设置较小时，测的网速约为无线网络的速度，将有线网络的跃点数设置较小时，测的网速约为有线网络的速度，设置相同的跃点数时，我目前的网络环境中，一开始网速接近有线网络的速度，后续速度逐渐提升，到达一个较高的网速：</p><p>测试工具：360宽带测速器</p><ul><li>首先不进行任何设置，测试三次无线网速:640,668,639</li><li>不进行任何测试测试三次有线网速:133,121,117</li><li>有线无线分别设置跃点数为15，测试五次网速：895,907,847,827,852</li><li>接着拔掉有线测三次:696,694,671</li><li>再插上有线测试三次:117,904,930</li></ul><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>以上测试，最后一次将有线拔掉再插上时网速测试为117，可能时设置还没有来得及生效，再测试一次即可正常了，通过测试结果来看，设置相同的跃点数确实有提高网速的作用，但是开始时网速网速一直保持一个较低的水平，测试的快要结束时，网速飙升到叠加的速度。</p><p>网上有人反应，叠加速度并不完美，可能会一个网络处于繁忙状态，另一个网络处于一个比较闲置的状态，测试可能会受到我网络环境的影响，有兴趣的小伙伴可以在实践中多多测试。</p><h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><ul><li><a href="https://baike.baidu.com/item/%E8%B7%83%E7%82%B9%E6%95%B0/4941127?fr=aladdin" target="_blank" rel="noopener">https://baike.baidu.com/item/%E8%B7%83%E7%82%B9%E6%95%B0/4941127?fr=aladdin</a></li><li><a href="http://blog.csdn.net/bitsly/article/details/12977493" target="_blank" rel="noopener">http://blog.csdn.net/bitsly/article/details/12977493</a></li><li><a href="https://www.ithome.com/html/win10/253612.htm" target="_blank" rel="noopener">https://www.ithome.com/html/win10/253612.htm</a></li><li><a href="https://www.zhihu.com/question/22703742" target="_blank" rel="noopener">https://www.zhihu.com/question/22703742</a></li></ul><hr><p>该博文来自于ieayoio的博客：<a href="http://www.ieayoio.com/">ieayoio’s blog</a></p><p>本文链接：<a href="http://www.ieayoio.com/2018/01/17/有线与无线网络叠加提升网速/">http://www.ieayoio.com/2018/01/17/有线与无线网络叠加提升网速/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;概念解释&quot;&gt;&lt;a href=&quot;#概念解释&quot; class=&quot;headerlink&quot; title=&quot;概念解释&quot;&gt;&lt;/a&gt;概念解释&lt;/h3&gt;&lt;p&gt;同时连接有线与无线网络时，电脑会使用有线网络还是无线网络呢？带着这个疑问，经过一番查找，发现原来时可以同时使用的，而且可以提
+      
+    
+    </summary>
+    
+      <category term="网络" scheme="http://www.ieayoio.com/categories/%E7%BD%91%E7%BB%9C/"/>
+    
+    
+      <category term="网络" scheme="http://www.ieayoio.com/tags/%E7%BD%91%E7%BB%9C/"/>
+    
+      <category term="Windows" scheme="http://www.ieayoio.com/tags/Windows/"/>
+    
+      <category term="跃点" scheme="http://www.ieayoio.com/tags/%E8%B7%83%E7%82%B9/"/>
+    
+      <category term="网速" scheme="http://www.ieayoio.com/tags/%E7%BD%91%E9%80%9F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>docker centos7镜像 Failed to get D-Bus connection: Operation not permitted</title>
+    <link href="http://www.ieayoio.com/2018/01/16/docker-centos7-Failed-to-get-D-Bus-connection-Operation-not-permitted/"/>
+    <id>http://www.ieayoio.com/2018/01/16/docker-centos7-Failed-to-get-D-Bus-connection-Operation-not-permitted/</id>
+    <published>2018-01-16T01:43:00.000Z</published>
+    <updated>2019-12-16T04:24:26.967Z</updated>
+    
+    <content type="html"><![CDATA[<p>docker centos7镜像中使用service或者systemctl提示Failed to get D-Bus connection: Operation not permitted，目前来看，这个问题只发生在centos7中，centos6.5镜像应当没这个问题，至于产生的原因，网上有相关的讨论：</p><p><a href="http://dockone.io/question/729" target="_blank" rel="noopener">http://dockone.io/question/729</a></p><blockquote><p>原来的systemd会需要CAP_SYS_ADMIN,我们不想这样,就换成了fakesystemd,所以你会遇到上面奇葩的问题.当然官方repo也给出了解决方案不过比较复杂.</p></blockquote><p>如果是没有service命令造成的，要先安装这个命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y initscripts</span><br></pre></td></tr></table></figure></p><p>以特权方式启动centos7镜像：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --privileged=true registry.docker-cn.com/library/centos:7 /bin/bash</span><br></pre></td></tr></table></figure></p><p> 例如重启mysql服务时报了如下错误：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@773a8f8c2a43 ~]# service mysqld restart</span><br><span class="line">Redirecting to /bin/systemctl restart mysqld.service</span><br><span class="line">Failed to get D-Bus connection: Operation not permitted</span><br></pre></td></tr></table></figure></p><p>解决方案如下，只需要执行一个命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exec /usr/sbin/init</span><br></pre></td></tr></table></figure></p><p>需要注意的是这里不能单纯的执行<code>/usr/sbin/init</code>，否则是不能生效的，执行完之后再次使用<code>docker exec</code>命令进入docker即可，此时service命令使用正常。</p><p>参考链接：</p><ul><li><a href="https://forums.docker.com/t/any-simple-and-safe-way-to-start-services-on-centos7-systemd/5695/8" target="_blank" rel="noopener">https://forums.docker.com/t/any-simple-and-safe-way-to-start-services-on-centos7-systemd/5695/8</a></li><li><a href="http://dockone.io/question/729" target="_blank" rel="noopener">http://dockone.io/question/729</a></li></ul><hr><p>该博文来自于ieayoio的博客：<a href="http://www.ieayoio.com/">ieayoio’s blog</a></p><p>本文链接：<a href="http://www.ieayoio.com/2018/01/16/docker-centos7-Failed-to-get-D-Bus-connection-Operation-not-permitted/">http://www.ieayoio.com/2018/01/16/docker-centos7-Failed-to-get-D-Bus-connection-Operation-not-permitted/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;docker centos7镜像中使用service或者systemctl提示Failed to get D-Bus connection: Operation not permitted，目前来看，这个问题只发生在centos7中，centos6.5镜像应当没这个问题，至
+      
+    
+    </summary>
+    
+      <category term="docker" scheme="http://www.ieayoio.com/categories/docker/"/>
+    
+    
+      <category term="linux" scheme="http://www.ieayoio.com/tags/linux/"/>
+    
+      <category term="docker" scheme="http://www.ieayoio.com/tags/docker/"/>
+    
+      <category term="centos" scheme="http://www.ieayoio.com/tags/centos/"/>
+    
+      <category term="centos7" scheme="http://www.ieayoio.com/tags/centos7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>mac下idea快捷键使用习惯备份记录</title>
+    <link href="http://www.ieayoio.com/2018/01/12/mac%E4%B8%8Bidea%E5%BF%AB%E6%8D%B7%E9%94%AE%E4%BD%BF%E7%94%A8%E4%B9%A0%E6%83%AF%E5%A4%87%E4%BB%BD%E8%AE%B0%E5%BD%95/"/>
+    <id>http://www.ieayoio.com/2018/01/12/mac下idea快捷键使用习惯备份记录/</id>
+    <published>2018-01-12T14:42:00.000Z</published>
+    <updated>2019-12-16T04:24:26.967Z</updated>
+    
+    <content type="html"><![CDATA[<p>工作的原因，日常开发平台要换回Windows了，感觉一些idea的快捷键可能会忘掉，这里总结一下，以做备份，平时用的比较多的，暂时想到这些，有些可以参考文章末尾附加的我的另一篇文章总结Windows的快捷键，有类似的地方，IDEA为mac准备了两个版本的快捷键，<code>Mac OS X</code>和<code>Mac OS X 10.5+</code>，我用的是，<code>Mac OS X</code>：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">⌘ + N   查找类名</span><br><span class="line">⌘ + ⇧ + N   查找文件名</span><br><span class="line">⌃ + ⇧ + F   全局查找文件内容</span><br><span class="line">⇧ + F6  修改文件名</span><br><span class="line">⇧ + ↩   切换到下一行</span><br><span class="line">⌘ + C   复制当前行</span><br><span class="line">⌘ + X   剪切当前行</span><br><span class="line">⌘ + /   注释当前行(选中注释多行)</span><br><span class="line">⌥ + ↩   自动提示</span><br><span class="line">⌘ + ⌥ + L   自动格式化</span><br><span class="line">⌘ + ⇧ + F8  查看所有断点</span><br><span class="line">psvm    main方法</span><br><span class="line">sout    System.out.println()</span><br></pre></td></tr></table></figure></p><p>其余的快捷键可以参考Windows的快捷键，比较类似：<br><a href="http://www.ieayoio.tk/2016/09/14/IDEA-AS%E5%BF%AB%E6%8D%B7%E9%94%AE%E6%94%B6%E9%9B%86-%E4%B9%A0%E6%83%AF/" target="_blank" rel="noopener">http://www.ieayoio.tk/2016/09/14/IDEA-AS%E5%BF%AB%E6%8D%B7%E9%94%AE%E6%94%B6%E9%9B%86-%E4%B9%A0%E6%83%AF/</a></p><p>他人总结比较全面的：<a href="http://www.cnblogs.com/tonycody/p/3257601.html" target="_blank" rel="noopener">http://www.cnblogs.com/tonycody/p/3257601.html</a></p><hr><p>该博文来自于ieayoio的博客：<a href="http://www.ieayoio.com/">ieayoio’s blog</a></p><p>本文链接：<a href="http://www.ieayoio.com/2018/01/12/mac下idea快捷键使用习惯备份记录/">http://www.ieayoio.com/2018/01/12/mac下idea快捷键使用习惯备份记录/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;工作的原因，日常开发平台要换回Windows了，感觉一些idea的快捷键可能会忘掉，这里总结一下，以做备份，平时用的比较多的，暂时想到这些，有些可以参考文章末尾附加的我的另一篇文章总结Windows的快捷键，有类似的地方，IDEA为mac准备了两个版本的快捷键，&lt;code&gt;
+      
+    
+    </summary>
+    
+      <category term="mac" scheme="http://www.ieayoio.com/categories/mac/"/>
+    
+    
+      <category term="IDE" scheme="http://www.ieayoio.com/tags/IDE/"/>
+    
+      <category term="IDEA" scheme="http://www.ieayoio.com/tags/IDEA/"/>
+    
+      <category term="备份" scheme="http://www.ieayoio.com/tags/%E5%A4%87%E4%BB%BD/"/>
+    
+      <category term="mac" scheme="http://www.ieayoio.com/tags/mac/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>mac下解决gitk模糊完整教程</title>
+    <link href="http://www.ieayoio.com/2017/03/31/mac%E4%B8%8B%E8%A7%A3%E5%86%B3gitk%E6%A8%A1%E7%B3%8A%E5%AE%8C%E6%95%B4%E6%95%99%E7%A8%8B/"/>
+    <id>http://www.ieayoio.com/2017/03/31/mac下解决gitk模糊完整教程/</id>
+    <published>2017-03-31T06:36:00.000Z</published>
+    <updated>2019-12-16T04:24:26.967Z</updated>
+    
+    <content type="html"><![CDATA[<p>gitk模糊这个问题比较冷门可能大多数人不太喜欢用gitk，我平时比较喜欢，终端里随时敲击gitk命令就可以查看git的提交记录，但是mac下gitk模糊也是真的让人有点难受了，之前看这个教程失败一次没再搞，这个又想做成功了，记录下来。</p><h3 id="关闭rootless"><a href="#关闭rootless" class="headerlink" title="关闭rootless"></a>关闭rootless</h3><p>新版本的mac开启了rootless功能，即使root用户也无法修改系统文件，我们需要关闭这个功能。</p><ul><li>重启按住command+R不动出现进度条，但是没有进入常规的开机流程</li><li>选择语言后，在顶部的菜单栏上找到实用工具–&gt;终端</li><li>执行 csrutil disable 终端英文提示成功需要重启</li><li>重启后csrutil status可以看到已经关闭了<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ csrutil status </span><br><span class="line">System Integrity Protection status: disabled.</span><br></pre></td></tr></table></figure></li></ul><blockquote><p>拓展：csrutil enable –without debug</p></blockquote><h3 id="修改Wish-app的Info-plist"><a href="#修改Wish-app的Info-plist" class="headerlink" title="修改Wish.app的Info.plist"></a>修改Wish.app的Info.plist</h3><p>cd到Wish.app目录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /System/Library/Frameworks/Tk.framework/Versions/Current/Resources</span><br></pre></td></tr></table></figure></p><p>打开Info.plist<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit ./Wish.app/Contents/Info.plist</span><br></pre></td></tr></table></figure></p><p>将以下代码加入<dict>标签末端<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;key&gt;NSHighResolutionCapable&lt;/key&gt;</span><br><span class="line">&lt;true/&gt;</span><br></pre></td></tr></table></figure></dict></p><h3 id="更新Wish-app"><a href="#更新Wish-app" class="headerlink" title="更新Wish.app"></a>更新Wish.app</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo touch Wish.app</span><br></pre></td></tr></table></figure><p>这里需要加一下sudo否则提示：<code>touch: Wish.app: Permission denied</code></p><h3 id="打开rootless"><a href="#打开rootless" class="headerlink" title="打开rootless"></a>打开rootless</h3><p>使用完毕后最好再打开rootless</p><p>参考链接：</p><p><a href="http://blog.csdn.net/yutao52shi/article/details/49841561" target="_blank" rel="noopener">http://blog.csdn.net/yutao52shi/article/details/49841561</a></p><p><a href="http://www.jianshu.com/p/653fac3d3b83" target="_blank" rel="noopener">http://www.jianshu.com/p/653fac3d3b83</a></p><hr><p>该博文来自于ieayoio的博客：<a href="http://www.ieayoio.com/">ieayoio’s blog</a></p><p>本文链接：<a href="http://www.ieayoio.com/2017/03/31/mac下解决gitk模糊完整教程/">http://www.ieayoio.com/2017/03/31/mac下解决gitk模糊完整教程/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;gitk模糊这个问题比较冷门可能大多数人不太喜欢用gitk，我平时比较喜欢，终端里随时敲击gitk命令就可以查看git的提交记录，但是mac下gitk模糊也是真的让人有点难受了，之前看这个教程失败一次没再搞，这个又想做成功了，记录下来。&lt;/p&gt;
+&lt;h3 id=&quot;关闭root
+      
+    
+    </summary>
+    
+      <category term="mac" scheme="http://www.ieayoio.com/categories/mac/"/>
+    
+    
+      <category term="git" scheme="http://www.ieayoio.com/tags/git/"/>
+    
+      <category term="mac" scheme="http://www.ieayoio.com/tags/mac/"/>
+    
+      <category term="权限" scheme="http://www.ieayoio.com/tags/%E6%9D%83%E9%99%90/"/>
+    
+      <category term="gitk" scheme="http://www.ieayoio.com/tags/gitk/"/>
+    
+      <category term="Retina" scheme="http://www.ieayoio.com/tags/Retina/"/>
+    
+      <category term="模糊" scheme="http://www.ieayoio.com/tags/%E6%A8%A1%E7%B3%8A/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>mac删除文件属性中的@符号</title>
+    <link href="http://www.ieayoio.com/2017/03/27/mac%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6%E5%B1%9E%E6%80%A7%E4%B8%AD%E7%9A%84-%E7%AC%A6%E5%8F%B7/"/>
+    <id>http://www.ieayoio.com/2017/03/27/mac删除文件属性中的-符号/</id>
+    <published>2017-03-27T09:34:00.000Z</published>
+    <updated>2019-12-16T04:24:26.967Z</updated>
+    
+    <content type="html"><![CDATA[<p>参考链接：<a href="http://www.jianshu.com/p/3782d73cb3e8" target="_blank" rel="noopener">http://www.jianshu.com/p/3782d73cb3e8</a></p><p>有时候在 Mac 系统下读写 NTFS 分区时，会发现一些文件不能打开。<br>显示错误为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">项目“XXX”已被 OS X 使用，不能打开。</span><br></pre></td></tr></table></figure></p><p>如果再终端 ls -al 命令一下就可以看到：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-rwxr-xr-x@</span><br></pre></td></tr></table></figure></p><p>文件的读写权限中被加上了一个@符号，这就是 Mac OS X 文件系统的附加属性（extended attributes）。</p><p>通过-l 参数可以查看详细的附加属性内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xattr -l hello.txt</span><br></pre></td></tr></table></figure></p><p>彻底删除附加属性的办法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xattr -c *.txt</span><br></pre></td></tr></table></figure></p><p>去除当前文件夹中所有 txt 的附加属性。再次 ls -al 可以发现没有了@符号。</p><p>注意，某些博客和贴吧推荐的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xattr -d com.apple.FinderInfo XXX.txt</span><br></pre></td></tr></table></figure></p><p>或者其他带有 com.apple.<em>**</em>的都可能删除不彻底。只有用-c 参数才能彻底删除。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;参考链接：&lt;a href=&quot;http://www.jianshu.com/p/3782d73cb3e8&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;http://www.jianshu.com/p/3782d73cb3e8&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;有时候在
+      
+    
+    </summary>
+    
+      <category term="mac" scheme="http://www.ieayoio.com/categories/mac/"/>
+    
+    
+      <category term="mac" scheme="http://www.ieayoio.com/tags/mac/"/>
+    
+      <category term="权限" scheme="http://www.ieayoio.com/tags/%E6%9D%83%E9%99%90/"/>
+    
+      <category term="符号" scheme="http://www.ieayoio.com/tags/%E7%AC%A6%E5%8F%B7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>macos自定义快捷键</title>
+    <link href="http://www.ieayoio.com/2016/12/28/macos%E8%87%AA%E5%AE%9A%E4%B9%89%E5%BF%AB%E6%8D%B7%E9%94%AE/"/>
+    <id>http://www.ieayoio.com/2016/12/28/macos自定义快捷键/</id>
+    <published>2016-12-28T12:35:00.000Z</published>
+    <updated>2019-12-16T04:24:26.967Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="系统自带的方式更改快捷键"><a href="#系统自带的方式更改快捷键" class="headerlink" title="系统自带的方式更改快捷键"></a>系统自带的方式更改快捷键</h2><p>自定义终端打开快捷键：<br>1.打开自带的Automator（可以用右上角Spotlight搜索找到）</p><p>2.在创建界面选择“服务”</p><p>3.如图：左侧列表中，找到：操作——资源库——实用工具——开启应用程序<br>    右侧选择“没有输入”，最后双击“开启应用程序”</p><p>4.在新出现的界面里选择需要的应用程序，例如这里选择了“终端”（如果列表中没有，可以在列表最下方的“其他”找到你的所有软件）</p><p>5.随便起个你能记得住的名字。这里起名“打开终端”保存</p><p>6.打开 系统偏好设置=》键盘=》快捷键=》服务》<br>    找到刚才起名的“打开终端”</p><p>7.设置快捷键</p><h2 id="通过软件更改快捷键"><a href="#通过软件更改快捷键" class="headerlink" title="通过软件更改快捷键"></a>通过软件更改快捷键</h2><p>Manico(收费)</p><hr><p>该博文来自于ieayoio的博客：<a href="http://www.ieayoio.com/">ieayoio’s blog</a></p><p>本文链接：<a href="http://www.ieayoio.com/2016/12/28/macos自定义快捷键/">http://www.ieayoio.com/2016/12/28/macos自定义快捷键/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;系统自带的方式更改快捷键&quot;&gt;&lt;a href=&quot;#系统自带的方式更改快捷键&quot; class=&quot;headerlink&quot; title=&quot;系统自带的方式更改快捷键&quot;&gt;&lt;/a&gt;系统自带的方式更改快捷键&lt;/h2&gt;&lt;p&gt;自定义终端打开快捷键：&lt;br&gt;1.打开自带的Automato
+      
+    
+    </summary>
+    
+      <category term="mac" scheme="http://www.ieayoio.com/categories/mac/"/>
+    
+    
+      <category term="mac" scheme="http://www.ieayoio.com/tags/mac/"/>
+    
+      <category term="osx" scheme="http://www.ieayoio.com/tags/osx/"/>
+    
+      <category term="快捷键" scheme="http://www.ieayoio.com/tags/%E5%BF%AB%E6%8D%B7%E9%94%AE/"/>
+    
+      <category term="终端" scheme="http://www.ieayoio.com/tags/%E7%BB%88%E7%AB%AF/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>已知两点经纬度计算距离</title>
+    <link href="http://www.ieayoio.com/2016/12/02/%E5%B7%B2%E7%9F%A5%E7%BB%8F%E7%BA%AC%E5%BA%A6%E8%AE%A1%E7%AE%97%E8%B7%9D%E7%A6%BB/"/>
+    <id>http://www.ieayoio.com/2016/12/02/已知经纬度计算距离/</id>
+    <published>2016-12-02T07:13:00.000Z</published>
+    <updated>2019-12-16T04:24:26.971Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近做了一些计算最近附近商店距离的工作，距离计算原以为就是勾股定理那么简单，然而真去做的时候才知道太天真了，经线上纬度每差一度可以有一个确定的值，然而，因为纬线圈的长度随着纬度的改变而改变，不能单纯的计算每个单位经度上距离的一个确定值。<br>经过一番的查找，原来计算距离有一个公式如下：<br>$$ S = 2 arcsin\sqrt{sin^2\frac a2 + cos(Lat1) × cos(Lat2) × sin^2\frac b2} × 6378.137 $$</p><ol><li><p>Lat1 Lung1 表示A点经纬度，Lat2 Lung2 表示B点经纬度，这里的单位是弧度而不是角度；</p></li><li><p>a=Lat1 – Lat2 为两点纬度之差  b=Lung1 -Lung2 为两点经度之差；</p></li><li><p>6378.137为地球半径，单位为千米；</p></li></ol><p>从公式中可以看到两点的经度Lung1和Lung2没有包含在公式中，而只是包含在差值之中。</p><p>知道公式了，网上的各种教程无非就是套用公式，例如数据库要查询可以写一个自定义的函数，一下以mysql为例：<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">FUNCTION</span> <span class="keyword">IF</span> <span class="keyword">EXISTS</span> GetDistance;</span><br><span class="line">DELIMITER $$</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">FUNCTION</span> GetDistance(LatBegin <span class="keyword">DOUBLE</span>, LngBegin <span class="keyword">DOUBLE</span>, LatEnd <span class="keyword">DOUBLE</span>, LngEnd <span class="keyword">DOUBLE</span>)</span><br><span class="line"><span class="keyword">RETURNS</span> <span class="keyword">DOUBLE</span>  </span><br><span class="line"><span class="keyword">BEGIN</span>  </span><br><span class="line">  <span class="keyword">DECLARE</span> Distance <span class="keyword">DOUBLE</span>;</span><br><span class="line">  <span class="keyword">DECLARE</span> EARTH_RADIUS <span class="keyword">DOUBLE</span>;</span><br><span class="line">  <span class="keyword">DECLARE</span> RadLatBegin,RadLatEnd,RadLatDiff,RadLngDiff <span class="keyword">DOUBLE</span>; </span><br><span class="line">  <span class="keyword">SET</span> EARTH_RADIUS = <span class="number">6378.137</span>;</span><br><span class="line">  <span class="keyword">SET</span> RadLatBegin = LatBegin * <span class="keyword">PI</span>()/<span class="number">180.0</span>;</span><br><span class="line">  <span class="keyword">SET</span> RadLatEnd = LatEnd * <span class="keyword">PI</span>()/<span class="number">180.0</span>;</span><br><span class="line">  <span class="keyword">SET</span> RadLatDiff = RadLatBegin - RadLatEnd;</span><br><span class="line">  <span class="keyword">SET</span> RadLngDiff = LngBegin * <span class="keyword">PI</span>()/<span class="number">180.0</span> - LngEnd * <span class="keyword">PI</span>()/<span class="number">180.0</span>;   </span><br><span class="line">  <span class="keyword">SET</span> Distance = <span class="number">2</span> *<span class="keyword">ASIN</span>(<span class="keyword">SQRT</span>(<span class="keyword">POWER</span>(<span class="keyword">SIN</span>(RadLatDiff/<span class="number">2</span>), <span class="number">2</span>)+<span class="keyword">COS</span>(RadLatBegin)*<span class="keyword">COS</span>(RadLatEnd)*<span class="keyword">POWER</span>(<span class="keyword">SIN</span>(RadLngDiff/<span class="number">2</span>), <span class="number">2</span>)));</span><br><span class="line">  <span class="keyword">SET</span> Distance = Distance * EARTH_RADIUS;</span><br><span class="line">  RETURN Distance;</span><br><span class="line"><span class="keyword">END</span>  $$</span><br><span class="line">DELIMITER ;</span><br></pre></td></tr></table></figure></p><p>这样定义一个自定义函数之后就可以直接利用这个函数进行数据库的查询和排序，例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM `shop` WHERE GetDistance(`double_latitude`,`double_longitude`,34.54,234.4) &lt; 5 ORDER BY GetDistance(`double_latitude`,`double_longitude`,34.54,234.4) DESC LIMIT 1,20</span><br></pre></td></tr></table></figure></p><p>另外再提供一个Java版本：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> java.lang.Math.*;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by ieayoio on 16-12-2.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DistanceUtils</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="title">getDistance</span><span class="params">(<span class="keyword">double</span> LatBegin, <span class="keyword">double</span> LngBegin, <span class="keyword">double</span> LatEnd, <span class="keyword">double</span> LngEnd)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">double</span> EARTH_RADIUS = <span class="number">6378.137</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">double</span> RadLatBegin = LatBegin * PI / <span class="number">180.0</span>;</span><br><span class="line">        <span class="keyword">double</span> RadLatEnd = LatEnd * PI / <span class="number">180.0</span>;</span><br><span class="line">        <span class="keyword">double</span> RadLatDiff = RadLatBegin - RadLatEnd;</span><br><span class="line">        <span class="keyword">double</span> RadLngDiff = LngBegin * PI / <span class="number">180.0</span> - LngEnd * PI / <span class="number">180.0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">double</span> Distance = <span class="number">2</span> * asin(sqrt(pow(sin(RadLatDiff / <span class="number">2</span>), <span class="number">2</span>) + cos(RadLatBegin) * cos(RadLatEnd) * pow(sin(RadLngDiff / <span class="number">2</span>), <span class="number">2</span>)));</span><br><span class="line">        <span class="keyword">return</span> Distance * EARTH_RADIUS;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><p>参考资料：<br><a href="https://zhidao.baidu.com/question/401287294.html" target="_blank" rel="noopener">https://zhidao.baidu.com/question/401287294.html</a><br><a href="http://blog.csdn.net/smartsmile2012/article/details/45339787" target="_blank" rel="noopener">http://blog.csdn.net/smartsmile2012/article/details/45339787</a><br><a href="http://blog.csdn.net/xiyang_1990/article/details/16803735" target="_blank" rel="noopener">http://blog.csdn.net/xiyang_1990/article/details/16803735</a></p><hr><p>该博文来自于ieayoio的博客：<a href="http://www.ieayoio.com/">ieayoio’s blog</a></p><p>本文链接：<a href="http://www.ieayoio.com/2016/12/02/已知经纬度计算距离/">http://www.ieayoio.com/2016/12/02/已知经纬度计算距离/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;最近做了一些计算最近附近商店距离的工作，距离计算原以为就是勾股定理那么简单，然而真去做的时候才知道太天真了，经线上纬度每差一度可以有一个确定的值，然而，因为纬线圈的长度随着纬度的改变而改变，不能单纯的计算每个单位经度上距离的一个确定值。&lt;br&gt;经过一番的查找，原来计算距离有
+      
+    
+    </summary>
+    
+      <category term="数据库" scheme="http://www.ieayoio.com/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+    
+      <category term="java" scheme="http://www.ieayoio.com/tags/java/"/>
+    
+      <category term="mysql" scheme="http://www.ieayoio.com/tags/mysql/"/>
+    
+      <category term="数据库" scheme="http://www.ieayoio.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+      <category term="距离" scheme="http://www.ieayoio.com/tags/%E8%B7%9D%E7%A6%BB/"/>
+    
+      <category term="算法" scheme="http://www.ieayoio.com/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="数学" scheme="http://www.ieayoio.com/tags/%E6%95%B0%E5%AD%A6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>2016移动cpu排行</title>
+    <link href="http://www.ieayoio.com/2016/11/10/2016cpu%E6%8E%92%E8%A1%8C/"/>
+    <id>http://www.ieayoio.com/2016/11/10/2016cpu排行/</id>
+    <published>2016-11-10T06:49:00.000Z</published>
+    <updated>2019-12-16T04:24:26.963Z</updated>
+    
+    <content type="html"><![CDATA[<p>手机cpu排行<br><img src="/images/resources/处理器排行.jpg" alt="移动cpu排行"></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;手机cpu排行&lt;br&gt;&lt;img src=&quot;/images/resources/处理器排行.jpg&quot; alt=&quot;移动cpu排行&quot;&gt;&lt;/p&gt;
+
+      
+    
+    </summary>
+    
+      <category term="手机" scheme="http://www.ieayoio.com/categories/%E6%89%8B%E6%9C%BA/"/>
+    
+    
+      <category term="手机" scheme="http://www.ieayoio.com/tags/%E6%89%8B%E6%9C%BA/"/>
+    
+      <category term="cpu" scheme="http://www.ieayoio.com/tags/cpu/"/>
+    
+      <category term="排行" scheme="http://www.ieayoio.com/tags/%E6%8E%92%E8%A1%8C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>filter中注入Spring MVC bean</title>
+    <link href="http://www.ieayoio.com/2016/11/04/filter%E4%B8%AD%E6%B3%A8%E5%85%A5Spring-MVC%E7%9A%84bean/"/>
+    <id>http://www.ieayoio.com/2016/11/04/filter中注入Spring-MVC的bean/</id>
+    <published>2016-11-04T06:01:00.000Z</published>
+    <updated>2019-12-16T04:24:26.967Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近需要在filter中添加一些log，然而需要注入一些Sping mvc的bean，直接使用发现完全不起效果，根本没有注入，调用的对象一直为空，就研究了一下，起初一直不起作用，后来发现原来是没有指定<code>contextConfigLocation</code>，现将代码记录下来，以备用：</p><p>原本的filter如下：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>RequestFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>cn.ieayoio.filter.RequestFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>RequestFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure></p><p>现在要以Spring代理过滤器，代码替换为如下：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>requestFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span> <span class="comment">&lt;!--过滤器的名字--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>org.springframework.web.filter.DelegatingFilterProxy<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>targetBeanName<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>requestFilter<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span> <span class="comment">&lt;!--自己定义的bean--&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>targetFilterLifecycle<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>true<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>requestFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure></p><p>然后需要在Spring配置文件加入这个bean，class指向原过滤器的类名：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">beans:bean</span> <span class="attr">id</span>=<span class="string">"requestFilter"</span> <span class="attr">class</span>=<span class="string">"cn.ieayoio.filter.RequestFilter"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans:bean</span>&gt;</span></span><br></pre></td></tr></table></figure></p><p>最后还需要在xml中添加<code>contextConfigLocation</code>：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">context-param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">param-name</span>&gt;</span>contextConfigLocation<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">param-value</span>&gt;</span></span><br><span class="line">           /WEB-INF/conf/mvc-dispatcher-servlet.xml, <span class="comment">&lt;!--添加在这里--&gt;</span></span><br><span class="line">classpath*:/WEB-INF/conf/mybatis-config.xml,</span><br><span class="line">classpath*:/WEB-INF/conf/my.properties</span><br><span class="line"><span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">context-param</span>&gt;</span></span><br></pre></td></tr></table></figure></p><p>这样就可以在filter中注入bean了：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> UserMapper userMapper;</span><br></pre></td></tr></table></figure></p><p>参考链接：<a href="http://blog.csdn.net/godha/article/details/13025099" target="_blank" rel="noopener">http://blog.csdn.net/godha/article/details/13025099</a></p><hr><p>该博文来自于ieayoio的博客：<a href="http://www.ieayoio.com/">ieayoio’s blog</a></p><p>本文链接：<a href="http://www.ieayoio.com/2016/11/04/filter中注入Spring-MVC的bean/">http://www.ieayoio.com/2016/11/04/filter中注入Spring-MVC的bean/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;最近需要在filter中添加一些log，然而需要注入一些Sping mvc的bean，直接使用发现完全不起效果，根本没有注入，调用的对象一直为空，就研究了一下，起初一直不起作用，后来发现原来是没有指定&lt;code&gt;contextConfigLocation&lt;/code&gt;，现将
+      
+    
+    </summary>
+    
+      <category term="Spring" scheme="http://www.ieayoio.com/categories/Spring/"/>
+    
+    
+      <category term="java" scheme="http://www.ieayoio.com/tags/java/"/>
+    
+      <category term="Spring" scheme="http://www.ieayoio.com/tags/Spring/"/>
+    
+      <category term="Spring mvc" scheme="http://www.ieayoio.com/tags/Spring-mvc/"/>
+    
+      <category term="filter" scheme="http://www.ieayoio.com/tags/filter/"/>
+    
+      <category term="注入" scheme="http://www.ieayoio.com/tags/%E6%B3%A8%E5%85%A5/"/>
+    
+      <category term="bean" scheme="http://www.ieayoio.com/tags/bean/"/>
+    
+      <category term="过滤器" scheme="http://www.ieayoio.com/tags/%E8%BF%87%E6%BB%A4%E5%99%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>IDEA不识别新语法报错</title>
+    <link href="http://www.ieayoio.com/2016/10/25/IDEA%E4%B8%8D%E8%AF%86%E5%88%AB%E6%96%B0%E8%AF%AD%E6%B3%95%E6%8A%A5%E9%94%99/"/>
+    <id>http://www.ieayoio.com/2016/10/25/IDEA不识别新语法报错/</id>
+    <published>2016-10-25T04:50:00.000Z</published>
+    <updated>2019-12-16T04:24:26.963Z</updated>
+    
+    <content type="html"><![CDATA[<p>File–&gt;Project Structure–&gt;Modules–&gt;选择项目–&gt;在右侧Language level中选择高的版本<br><img src="http://images2015.cnblogs.com/blog/883276/201610/883276-20161025124231296-637829842.png" alt="更改版本1"><br>如果再有<code>Error:java: Compilation failed: internal java compiler error</code>的错误可以如下进行<br>File–&gt;setting…–&gt;Buil,Execution，Deployment–&gt;Compiler–&gt;Java Compiler中，改一下Module，我的原来是1.5改成1.8<br><img src="http://images2015.cnblogs.com/blog/883276/201608/883276-20160802171857606-1002205608.png" alt="更改版本2"></p><hr><p>该博文来自于ieayoio的博客：<a href="http://www.ieayoio.com/">ieayoio’s blog</a></p><p>本文链接：<a href="http://www.ieayoio.com/2016/10/25/IDEA不识别新语法报错/">http://www.ieayoio.com/2016/10/25/IDEA不识别新语法报错/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;File–&amp;gt;Project Structure–&amp;gt;Modules–&amp;gt;选择项目–&amp;gt;在右侧Language level中选择高的版本&lt;br&gt;&lt;img src=&quot;http://images2015.cnblogs.com/blog/883276/20161
+      
+    
+    </summary>
+    
+      <category term="IDE" scheme="http://www.ieayoio.com/categories/IDE/"/>
+    
+    
+      <category term="IDE" scheme="http://www.ieayoio.com/tags/IDE/"/>
+    
+      <category term="IDEA" scheme="http://www.ieayoio.com/tags/IDEA/"/>
+    
+      <category term="java" scheme="http://www.ieayoio.com/tags/java/"/>
+    
+      <category term="版本" scheme="http://www.ieayoio.com/tags/%E7%89%88%E6%9C%AC/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux下免费git工具集合体验</title>
+    <link href="http://www.ieayoio.com/2016/10/13/Linux%E4%B8%8Bgit%E5%B7%A5%E5%85%B7%E9%9B%86%E5%90%88/"/>
+    <id>http://www.ieayoio.com/2016/10/13/Linux下git工具集合/</id>
+    <published>2016-10-13T09:23:00.000Z</published>
+    <updated>2019-12-16T04:24:26.963Z</updated>
+    
+    <content type="html"><![CDATA[<p>win和mac下的git图形工具都有挺多的，然而对于因git而生的Linux，git的图形工具普遍被认为相当落后，然而经过查找，其实还是挺多，今天就把免费的git工具一起体验了一把，记录下来。</p><h1 id="git-gui和gitk"><a href="#git-gui和gitk" class="headerlink" title="git-gui和gitk"></a>git-gui和gitk</h1><ul><li>适用平台:Mac，Linux，Windows</li><li>安装方式：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install git-gui gitk</span><br></pre></td></tr></table></figure></li></ul><p>首先是git自带工具git-gui和gitk，这两个应该是gitk中我最早认识的图形工具，git-gui方便对git仓库进行一些管理，而gitk可以进行一些历史的查看。</p><p><img src="http://file1.wailian.work/2016/10/13/git_gui.png" alt="git-gui"></p><p><img src="http://file1.wailian.work/2016/10/13/gitk.png" alt="gitk"></p><h1 id="gitg"><a href="#gitg" class="headerlink" title="gitg"></a>gitg</h1><ul><li>适用平台:Linux</li><li>安装方式：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install gitg</span><br></pre></td></tr></table></figure></li></ul><p>挺好看的一个工具，除了可以查看git历史，还可以对git仓库进行一些简单的处理,历史变动是自动折叠的且不能设置，感觉有点稍微别扭</p><p><img src="http://file1.wailian.work/2016/10/13/gitg.png" alt="gitg"></p><h1 id="git-cola"><a href="#git-cola" class="headerlink" title="git-cola"></a>git-cola</h1><ul><li>适用平台:Mac，Linux，Windows</li><li>安装方式：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install git-cola</span><br></pre></td></tr></table></figure></li></ul><p>界面还可以，功能也比较完善可以进行一些比较复杂的操作，但是感觉体验比较繁杂，历史视图和git分居两个窗口，启动第一界面是对git仓库的操作。</p><p><img src="http://file1.wailian.work/2016/10/13/git-cola02.png" alt="git-cola02"></p><p><img src="http://file1.wailian.work/2016/10/13/git-cola01.png" alt="git-cola01"></p><h1 id="giggle"><a href="#giggle" class="headerlink" title="giggle"></a>giggle</h1><ul><li>适用平台:Linux</li><li>安装方式：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install giggle</span><br></pre></td></tr></table></figure></li></ul><p>没有发现操作git仓库的功能，只是git查看工具，可以考虑替代gitk，不过默认显示<code>浏览</code>而非<code>历史</code>且不能设置，如果想默认查看历史的话有点不方便。</p><p><img src="http://file1.wailian.work/2016/10/13/giggle.png" alt="giggle"></p><h1 id="GitEye"><a href="#GitEye" class="headerlink" title="GitEye"></a>GitEye</h1><ul><li>适用平台:Mac，Linux，Windows</li><li>安装包：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://yunpan.cn/cvP6uYQahSySB （提取码：50bc）</span><br></pre></td></tr></table></figure></li></ul><p>感觉还可以功能也比较完善，有点庞大，打开有种让我打开eclipse的错觉，界面和eclipse十分相似</p><p><img src="http://file1.wailian.work/2016/10/13/GitEye.png" alt="GitEye"></p><h1 id="GitKraken"><a href="#GitKraken" class="headerlink" title="GitKraken"></a>GitKraken</h1><ul><li>适用平台:Mac，Linux，Windows</li><li>安装包:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://yunpan.cn/cvP6uYQahSySB （提取码：50bc）</span><br></pre></td></tr></table></figure></li></ul><p>庞大且华丽的git工具，界面十分漂亮，默认黑色的主题加扁平设计，让然感觉具有十分先进的现代感，如果说GitEye像eclipse的话，GitKraken就像IntelliJ IDEA，十分酷炫和华丽</p><p><img src="http://file1.wailian.work/2016/10/13/GitKraken.png" alt="GitKraken"></p><p>暂时发现的就这么多，总的来说我觉得这些工具都不是十分完美，都不能同时满足轻巧/方便/强大这三点，外观和设计上GitKraken的最好，如果需要比较强大的功能建议选择GitEye和GitKraken，如果简单是查看历史还是选择其他的比较好。</p><hr><p>该博文来自于ieayoio的博客：<a href="http://www.ieayoio.com/">ieayoio’s blog</a></p><p>本文链接：<a href="http://www.ieayoio.com/2016/10/13/Linux下git工具集合/">http://www.ieayoio.com/2016/10/13/Linux下git工具集合/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;win和mac下的git图形工具都有挺多的，然而对于因git而生的Linux，git的图形工具普遍被认为相当落后，然而经过查找，其实还是挺多，今天就把免费的git工具一起体验了一把，记录下来。&lt;/p&gt;
+&lt;h1 id=&quot;git-gui和gitk&quot;&gt;&lt;a href=&quot;#git-
+      
+    
+    </summary>
+    
+      <category term="git" scheme="http://www.ieayoio.com/categories/git/"/>
+    
+    
+      <category term="linux" scheme="http://www.ieayoio.com/tags/linux/"/>
+    
+      <category term="git" scheme="http://www.ieayoio.com/tags/git/"/>
+    
+      <category term="工具" scheme="http://www.ieayoio.com/tags/%E5%B7%A5%E5%85%B7/"/>
+    
+      <category term="体验" scheme="http://www.ieayoio.com/tags/%E4%BD%93%E9%AA%8C/"/>
+    
+      <category term="集合" scheme="http://www.ieayoio.com/tags/%E9%9B%86%E5%90%88/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux下Android Studio的Gradle找不到aapt文件</title>
+    <link href="http://www.ieayoio.com/2016/10/10/Linux%E4%B8%8BGradle%E6%89%BE%E4%B8%8D%E5%88%B0aapt%E6%96%87%E4%BB%B6/"/>
+    <id>http://www.ieayoio.com/2016/10/10/Linux下Gradle找不到aapt文件/</id>
+    <published>2016-10-10T02:57:00.000Z</published>
+    <updated>2019-12-16T04:24:26.963Z</updated>
+    
+    <content type="html"><![CDATA[<p>gradle build了好久一直不通过以为是网速问题尝试代理也无济于事，原以为是代码中引入了十分难以下载的依赖，今天打开了Gradle Console发现了一大堆显示<code>XXXX/XXXX/aapt 没有那个文件或者目录</code>的问题，查询后原来是Linux下缺少了<code>lib32stdc++6</code>和<code>lib32z1</code>库。<br>突然想到其实下载as的时候网站上有提示，我当时忽略了，重新翻出来：</p><blockquote><p>注：如果您运行的是 64 位版本 Ubuntu，则您需要使用以下命令安装一些 32 位库：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install lib32z1 lib32ncurses5 lib32bz2-1.0 lib32stdc++6</span><br></pre></td></tr></table></figure></p></blockquote><blockquote><p>如果您运行的是 64 位版本的 Fedora，则所用命令为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install zlib.i686 ncurses-libs.i686 bzip2-libs.i686</span><br></pre></td></tr></table></figure></p></blockquote><p>其实当时我并不是没有看到，只是我执行命令的时候显示的是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ sudo apt-get install lib32z1 lib32ncurses5 lib32bz2-1.0 lib32stdc++6</span><br><span class="line">[sudo] ieayoio 的密码：</span><br><span class="line">正在读取软件包列表... 完成</span><br><span class="line">正在分析软件包的依赖关系树       </span><br><span class="line">正在读取状态信息... 完成       </span><br><span class="line">E: 无法定位软件包 lib32bz2-1.0</span><br><span class="line">E: 无法按照 glob ‘lib32bz2-1.0’ 找到任何软件包</span><br><span class="line">E: 无法按照正则表达式 lib32bz2-1.0 找到任何软件包</span><br></pre></td></tr></table></figure></p><p>在底部网站上写着：</p><blockquote><p>大功告成！下面的视频显示了推荐安装程序的每个步骤。</p></blockquote><p>哪里大功告成了！[摔]lib32bz2-1.0根本找不到好不好！经过这次教训就索性解决了这个问题,找到了替代方案：</p><blockquote><p>At first enable multi-arch support (if not done already):<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dpkg --add-architecture i386</span><br></pre></td></tr></table></figure></p></blockquote><blockquote><p>Now run:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br></pre></td></tr></table></figure></p></blockquote><blockquote><p>You can now install the package by:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libbz2-1.0:i386</span><br></pre></td></tr></table></figure></p></blockquote><p>这样，这个问题就告一段落，记录下来。。。<br>参考链接：<br><a href="https://developer.android.com/studio/install.html" target="_blank" rel="noopener">https://developer.android.com/studio/install.html</a><br><a href="http://blog.csdn.net/u012336923/article/details/48264665" target="_blank" rel="noopener">http://blog.csdn.net/u012336923/article/details/48264665</a><br><a href="http://askubuntu.com/questions/637113/unable-to-locate-package-lib32bz2-1-0" target="_blank" rel="noopener">http://askubuntu.com/questions/637113/unable-to-locate-package-lib32bz2-1-0</a></p><hr><p>该博文来自于ieayoio的博客：<a href="http://www.ieayoio.com/">ieayoio’s blog</a></p><p>本文链接：<a href="http://www.ieayoio.com/2016/10/10/Linux下Gradle找不到aapt文件/">http://www.ieayoio.com/2016/10/10/Linux下Gradle找不到aapt文件/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;gradle build了好久一直不通过以为是网速问题尝试代理也无济于事，原以为是代码中引入了十分难以下载的依赖，今天打开了Gradle Console发现了一大堆显示&lt;code&gt;XXXX/XXXX/aapt 没有那个文件或者目录&lt;/code&gt;的问题，查询后原来是Linux
+      
+    
+    </summary>
+    
+      <category term="Android" scheme="http://www.ieayoio.com/categories/Android/"/>
+    
+    
+      <category term="IDE" scheme="http://www.ieayoio.com/tags/IDE/"/>
+    
+      <category term="linux" scheme="http://www.ieayoio.com/tags/linux/"/>
+    
+      <category term="Android" scheme="http://www.ieayoio.com/tags/Android/"/>
+    
+      <category term="Android Studio" scheme="http://www.ieayoio.com/tags/Android-Studio/"/>
+    
+      <category term="Gradle" scheme="http://www.ieayoio.com/tags/Gradle/"/>
+    
+      <category term="build" scheme="http://www.ieayoio.com/tags/build/"/>
+    
+      <category term="ubuntu" scheme="http://www.ieayoio.com/tags/ubuntu/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>debian安装时驱动缺失的解决方案</title>
+    <link href="http://www.ieayoio.com/2016/09/30/debian%E5%AE%89%E8%A3%85%E6%97%B6%E9%A9%B1%E5%8A%A8%E7%BC%BA%E5%A4%B1%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"/>
+    <id>http://www.ieayoio.com/2016/09/30/debian安装时驱动缺失的解决方案/</id>
+    <published>2016-09-30T13:46:00.000Z</published>
+    <updated>2019-12-16T04:24:26.967Z</updated>
+    
+    <content type="html"><![CDATA[<p>曾经我在我的电脑安装debian时，因为驱动问题使我痛苦万分，然而我却好了伤疤忘了疼，今天突然发现当时下载的东西被我随便丢弃在U盘里。</p><p><strong><font color="red">注意：这只是在我电脑上的解决方案，如果看到本文的人也出现了类似的问题可以做参考，但是并不确定在其他电脑上是否有完全相同的解决方式。</font></strong></p><p>我的电脑型号是联想b490，这个型号好像有很多版本，这是我是大二时候买的电脑，当时觉得(虽然作为穷人的我现在依然觉的)电脑真是一个大件，当时选了好久，选了个价钱便宜但是性能感觉还行的，我依稀记得价钱貌似是2999，经过我加的内存和SSD现如今依然还是比较流畅的，我还是很满意的。</p><p>好了不说废话了，要记录了下来，下次就来这里找了，用法很简单以下百度分享的文件夹里有两个文件：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">链接: https://pan.baidu.com/s/1hrUzeXe 密码: 3au2</span><br></pre></td></tr></table></figure><p>将这两个文件直接放在U盘的根目录下，如果是通过U盘安装debian的话，要同时插上两个U盘，一个是U盘启动盘，一个是存放这两个文件的U盘，这样，在安装系统的时候，自动就会解决驱动问题。</p><p>终于可以安心的格式化U盘了，嘿嘿，我去了</p><hr><p>该博文来自于ieayoio的博客：<a href="http://www.ieayoio.com/">ieayoio’s blog</a></p><p>本文链接：<a href="http://www.ieayoio.com/2016/09/30/debian安装时驱动缺失的解决方案/">http://www.ieayoio.com/2016/09/30/debian安装时驱动缺失的解决方案/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;曾经我在我的电脑安装debian时，因为驱动问题使我痛苦万分，然而我却好了伤疤忘了疼，今天突然发现当时下载的东西被我随便丢弃在U盘里。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;font color=&quot;red&quot;&gt;注意：这只是在我电脑上的解决方案，如果看到本文的人也出现了类似的问题可以
+      
+    
+    </summary>
+    
+      <category term="linux" scheme="http://www.ieayoio.com/categories/linux/"/>
+    
+    
+      <category term="linux" scheme="http://www.ieayoio.com/tags/linux/"/>
+    
+      <category term="驱动" scheme="http://www.ieayoio.com/tags/%E9%A9%B1%E5%8A%A8/"/>
+    
+      <category term="debian" scheme="http://www.ieayoio.com/tags/debian/"/>
+    
+      <category term="碎念" scheme="http://www.ieayoio.com/tags/%E7%A2%8E%E5%BF%B5/"/>
+    
+      <category term="备份" scheme="http://www.ieayoio.com/tags/%E5%A4%87%E4%BB%BD/"/>
+    
+  </entry>
+  
+</feed>
