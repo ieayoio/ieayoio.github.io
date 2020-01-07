@@ -25,8 +25,7 @@
 <p>Dozer是基于反射来实现对象拷贝，反射调用set/get 或者是直接对成员变量赋值。</p>
 <p>该方式通过invoke执行赋值，实现时一般会采用beanutil, Javassist等开源库。</p>
 <h2 id="使用json"><a href="#使用json" class="headerlink" title="使用json"></a>使用json</h2><p>这也是深拷贝的方式，利用json序列化+反序列化实现，其实和之前将的使用序列化方式是类似的到底，不过不用再实现<code>Serializable</code>接口，常见的工具比如<code>fastjson</code>就能实现</p>
-<p>参考链接：</p>
-<p><a href="https://houbb.github.io/2019/01/09/java-deep-copy" target="_blank" rel="noopener">https://houbb.github.io/2019/01/09/java-deep-copy</a></p>
+<h2 id="参考链接："><a href="#参考链接：" class="headerlink" title="参考链接："></a>参考链接：</h2><p><a href="https://houbb.github.io/2019/01/09/java-deep-copy" target="_blank" rel="noopener">https://houbb.github.io/2019/01/09/java-deep-copy</a></p>
 <p><a href="https://juejin.im/post/5dc2b293e51d456e65283e61" target="_blank" rel="noopener">https://juejin.im/post/5dc2b293e51d456e65283e61</a></p>
 <p><a href="https://blog.csdn.net/lp840312696/article/details/83748979" target="_blank" rel="noopener">https://blog.csdn.net/lp840312696/article/details/83748979</a></p>
 <p><a href="https://my.oschina.net/xiaominmin/blog/2964005" target="_blank" rel="noopener">https://my.oschina.net/xiaominmin/blog/2964005</a></p>
