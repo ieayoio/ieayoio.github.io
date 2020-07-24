@@ -1220,6 +1220,7 @@
 <p>自动展开打开文件的目录：从Project左边栏的齿轮上选择Autoscroll to Source和Autoscroll from Source都勾选上即可</p>
 <p>暂时发现还可以的字体：File–&gt;Settings，在Appearance中的 Override default fonts by （…）打勾，选择Dialog/Noto Sans CJK JP Regular字体</p>
 <p><code>Structure</code>结构中选中<code>Autoscroll from Source</code>（半封口矩形与下箭头组合图标）自动代码中光标位置对应的<code>Structure</code>位置处于选中状态</p>
+<p>java注释不在行首添加”//“:Setting–&gt;Editor–&gt;Code Style–&gt;Java–&gt;标签页Code Generation–&gt;下面的comment code里的关闭”line comment at first column”</p>
 <p>他人关于快捷键的收集：<a href="http://www.cnblogs.com/tonycody/p/3257601.html" target="_blank" rel="noopener">http://www.cnblogs.com/tonycody/p/3257601.html</a></p>
 <p>原文链接：<a href="http://www.cnblogs.com/ieayoio/p/5168976.html" target="_blank" rel="noopener">ieayoio的博客园</a></p>
 <hr>
